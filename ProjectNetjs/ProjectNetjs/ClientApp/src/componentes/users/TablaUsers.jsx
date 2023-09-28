@@ -1,6 +1,5 @@
-﻿import { useEffect, useState } from "react";
-import { Table, Button } from "reactstrap"
-import { useListUser } from "../hooks/useListUser";
+﻿import { Table, Button } from "reactstrap"
+import { useListUser } from "../../hooks/useListUser";
 
 const TablaUsers = ({ toogleModal, toogleEdit }) => {
     const { users,

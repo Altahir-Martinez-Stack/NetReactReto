@@ -14,12 +14,13 @@ const modeloReceipt = {
     idUsers: 1
 }
 
-const ModalReceipt = ({ showModal, setShowModal, saveReceipt, update, setUpdate, updateReceipt }) => {
+const ModalReceipt = ({ showModal, setShowModal, saveReceipt, update, setUpdate, updateReceipt, coins, documentTypes }) => {
+
 
     const [receipt, setReceipt] = useState(modeloReceipt)
 
     const updateData = (e) => {
-        //console.log(e.target.name + " : " + e.target.value)
+        console.log(e.target.name + " : " + e.target.value)
         setReceipt(
             {
                 ...receipt,
@@ -27,11 +28,6 @@ const ModalReceipt = ({ showModal, setShowModal, saveReceipt, update, setUpdate,
             }
         )
     }
-
-    const handleSelectChange = ({ value }) => {
-        console.log(value)
-    }
-
 
     const sendData = () => {
         if (receipt.id === 0) {
@@ -65,19 +61,49 @@ const ModalReceipt = ({ showModal, setShowModal, saveReceipt, update, setUpdate,
                 </ModalHeader>
                 <ModalBody>
                     <Form>
-                        {/*<FormGroup>*/}
-                        {/*    <Label for="exampleSelect">*/}
-                        {/*        Type de moneda*/}
-                        {/*    </Label>*/}
-                        {/*    <Input*/}
-                        {/*        options={ }*/}
-                        {/*        onChange={handleSelectChange}*/}
-                        {/*    >*/}
-                        {/*    </Input>*/}
-                        {/*</FormGroup>*/}
                         <FormGroup>
-                            <Label>Tipo de moneda</Label>
-                            <Input type="number" name="idCoins" onChange={(e) => updateData(e)} value={receipt.idCoins}></Input>
+                            <Label for="exampleSelect">
+                                Tipo de documento
+                            </Label>
+                            <Input
+                                id="exampleSelect"
+                                name="idDocumentType"
+                                type="select"
+                                value={receipt.idDocumentType}
+                                onChange={(e) => updateData(e)}
+
+                            >
+                                {
+                                    documentTypes && documentTypes.map(documentType => (
+                                        <option key={documentType.id} value={documentType.id}>
+                                           {documentType.name}
+                                        </option>
+                                    ))
+                                }
+
+                            </Input>
+                        </FormGroup>
+                        <FormGroup>
+                            <Label for="exampleSelect">
+                                Tipo de Moneda
+                            </Label>
+                            <Input
+                                id="exampleSelect"
+                                name="idCoins"
+                                type="select"
+                                value={receipt.idCoins}
+                                onChange={(e) => updateData(e)}
+                              
+                            >
+                                {
+                                    coins && coins.map(coin => (
+                                        <option key={coin.id} value={coin.id}>
+                                            {coin.code} - {coin.name }
+                                        </option>
+                                    ))
+                                }
+
+                            </Input>
                         </FormGroup>
                         <FormGroup>
                             <Label>Monto</Label>
@@ -88,20 +114,16 @@ const ModalReceipt = ({ showModal, setShowModal, saveReceipt, update, setUpdate,
                             <Input name="title" onChange={(e) => updateData(e)} value={receipt.title}></Input>
                         </FormGroup>
                         <FormGroup>
-                            <Label>Descripcion</Label>
-                            <Input name="description" onChange={(e) => updateData(e)} value={receipt.description}></Input>
-                        </FormGroup>
-                        <FormGroup>
-                            <Label>Direccion</Label>
-                            <Input name="address" onChange={(e) => updateData(e)} value={receipt.address}></Input>
-                        </FormGroup>
-                        <FormGroup>
                             <Label>Nombre</Label>
                             <Input name="fullName" onChange={(e) => updateData(e)} value={receipt.fullName}></Input>
                         </FormGroup>
                         <FormGroup>
-                            <Label>Tipo de documento</Label>
-                            <Input type="number" name="idDocumentType" onChange={(e) => updateData(e)} value={receipt.idDocumentType}></Input>
+                            <Label>Dirección</Label>
+                            <Input name="address" onChange={(e) => updateData(e)} value={receipt.address}></Input>
+                        </FormGroup>
+                        <FormGroup>
+                            <Label>Descripción</Label>
+                            <Input name="description" onChange={(e) => updateData(e)} value={receipt.description}></Input>
                         </FormGroup>
                     </Form>
                 </ModalBody>

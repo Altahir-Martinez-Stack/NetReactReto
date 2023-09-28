@@ -1,135 +1,36 @@
-﻿import { useEffect, useState } from "react"
-import { Container, Card, Row, Col, CardHeader, CardBody, Button } from "reactstrap"
-import TableReceipt from "./componentes/receipt/TableReceipt"
-import ModalReceipt from "./componentes/receipt/ModalReceipt"
+﻿import { Routes, Route, NavLink } from 'react-router-dom';
+import './css/App.css';
+import sidebarData from './sidebarData';
+import Receipt from './pages/Receipt'
+import Pdf from './pages/Pdf'
+import Users from './pages/Users'
+import Home from './pages/Home'
 
-const App = () => {
-
-    const [receipt, setReceipt] = useState([])
-    const [showModal, setShowModal] = useState(false)
-    const [update, setUpdate] = useState(null)
-
-    const getReceipt = async () => {
-        /**
-        * GetAll service Receiptcontroller 
-        * 
-        * ** */
-        const response = await fetch("api/receipt/List");
-        if (response.ok) {
-            const data = await response.json();
-            console.table(data)
-            setReceipt(data)
-        }
-        else{
-            console.error("Error getReceipt")
-        }
-    }
-
-    useEffect(() => {
-        getReceipt()
-    }, []) 
-
-    const saveReceipt = async (receipt) => {
-        /**
-         * Create service Receiptcontroller 
-         * 
-         * ** */
-        console.log("saveReceipt:", receipt)
-        if (receipt.idCoins !== null ||
-            receipt.amount !== null ||
-            receipt.idDocumentType !== null ||
-            receipt.idCoins !== null)
-        {
-            const response = await fetch("api/receipt/Save", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(receipt)
-            });
-            if (response.ok) {
-                setShowModal(!showModal);
-                getReceipt();
-            } else {
-                console.error("Error saveReceipt")
-            }
-        }
-    }
-
-    const updateReceipt = async (receipt) => {
-        /**
-        * Update service Receiptcontroller 
-        * 
-        * ** */
-        console.log("updateReceipt:", receipt)
-        const response = await fetch("api/receipt/Update", {
-            method: "PUT",
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8'
-            },
-            body: JSON.stringify(receipt)
-        });
-        if (response.ok) {
-            setShowModal(!showModal);
-            getReceipt();
-        } else {
-            console.error("Error updateReceipt")
-        }
-    }
-
-    const deleteReceipt = async (id) => {
-        /**
-       * Delete service Receiptcontroller 
-       * 
-       * ** */
-        console.log("deleteReceipt:", id)
-        var result = window.confirm("Desea eliminar el contacto?")
-        if (!result) {
-            return;
-        }
-
-        const response = await fetch("api/receipt/Delete/" + id, {
-            method: "DELETE",
-        });
-        if (response.ok) {
-            getReceipt();
-        } else {
-            console.log("Error deleteReceipt")
-        }
-    }
-
+function App() {
     return (
         <>
-            <Container>
-                <Row className="mt-5">
-                    <Col sm="12">
-                        <Card>
-                            <CardHeader>
-                            <h5>Lista Recibo</h5>
-                            </CardHeader>
-                            <CardBody>
-                                <Button size="sm" color="success" onClick={() => setShowModal(!showModal)}>Nuevo Test</Button>
-                                <hr></hr>
-                                <TableReceipt
-                                    data={receipt}
-                                    setUpdate={setUpdate}
-                                    showModal={showModal}
-                                    setShowModal={setShowModal}
-                                    deleteReceipt={deleteReceipt}>
-                                </TableReceipt>
-                            </CardBody>
-                        </Card>
-                    </Col>
-                </Row>
-                <ModalReceipt
-                    showModal={showModal}
-                    setShowModal={setShowModal}
-                    saveReceipt={saveReceipt}
-                    update={update}
-                    setUpdate={setUpdate}
-                    updateReceipt={updateReceipt}
-                ></ModalReceipt>
-            </Container>
+            <div className="App">
+                <div className="sidedar-container">
+                    <ul className="nav-list">
+                        {sidebarData.map((item, index) => {
+                            return (
+                                <li className="nav-item" key={index}>
+                                    <NavLink to={item.path} className={({ isActive }) => ["nav-link", isActive ? "active" : null].join("")}>
+                                        <span>{ item.title }</span>
+                                    </NavLink>
+
+                                </li>
+                            )
+                        }) }
+                    </ul>
+                </div>
+                <Routes>
+                    <Route path="/" element={<Home></Home>}></Route>
+                    <Route path="/Receipt" element={<Receipt></Receipt>}></Route>
+                    <Route path="/Users" element={<Users></Users>}></Route>
+                    <Route path="/Pdf" element={<Pdf></Pdf>}></Route>
+                </Routes>
+            </div>
         </>
     )
 }

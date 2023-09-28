@@ -25,6 +25,14 @@ namespace ProjectNetjs.Controllers
             return StatusCode(StatusCodes.Status200OK, coin);
         }
 
+        [HttpGet]
+        [Route("ListById/{id:int}")]
+        public async Task<IActionResult> ListById(int id)
+        {
+            var coin = await _dbcontext.Coins.Where(t => t.Id == id).SingleOrDefaultAsync();
+            return StatusCode(StatusCodes.Status200OK, coin);
+        }
+
         [HttpPost]
         [Route("Save")]
         public async Task<IActionResult> Save([FromBody] Coin request)

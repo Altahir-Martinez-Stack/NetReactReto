@@ -23,5 +23,12 @@ namespace ProjectNetjs.Controllers
             List<DocumentType> documentType = await _dbcontext.DocumentTypes.Where(t => true).ToListAsync();
             return StatusCode(StatusCodes.Status200OK, documentType);
         }
+        [HttpGet]
+        [Route("ListById/{id:int}")]
+        public async Task<IActionResult> ListById(int id)
+        {
+            var documentType = await _dbcontext.DocumentTypes.Where(t => t.Id == id).SingleOrDefaultAsync();
+            return StatusCode(StatusCodes.Status200OK, documentType);
+        }
     }
 }
