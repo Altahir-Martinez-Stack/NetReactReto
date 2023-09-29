@@ -8,6 +8,10 @@ const sidebarData = [
         title: "Recibos",
         path:"/Receipt"
     },
+    //{
+    //    title: "Usuarios",
+    //    path: "/Users"
+    //},
 ]
 
 export default sidebarData;

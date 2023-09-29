@@ -29,7 +29,7 @@ namespace ProjectNetjs.Controllers
         [Route("ListById/{id:int}")]
         public async Task<IActionResult> ListById(int id)
         {
-            var coin = await _dbcontext.Coins.Where(t => t.Id == id).SingleOrDefaultAsync();
+            var coin = await _dbcontext.Coins.AsNoTracking().Where(t => t.Id == id).SingleOrDefaultAsync();
             return StatusCode(StatusCodes.Status200OK, coin);
         }
 
